@@ -1,38 +1,42 @@
-
 os: osx
 osx_image: xcode7.3
 language: cpp
+
 env:
   global:
-    - OPENSSL_ROOT_DIR=/usr/local/opt/openssl
-    - GOLOS_VERSION=v0.14.2
+  - OPENSSL_ROOT_DIR='/usr/local/Cellar/openssl/1.0.2h_1/
+  - BOOST_ROOT=/usr/local/Cellar/boost160/1.60.0
+  - GOLOS_VERSION=v0.14.2
 
-install:
-  - brew update
-  - brew upgrade cmake git autoconf automake libtool openssl 
-  - brew install qt5 python3 google-perftools berkeley-db readline
-  # Downgrade boost to 1.60.0
-  - brew unlink boost
-  - brew install homebrew/versions/boost160
-  #- brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/1fa330ce7a067406ff05392dead86cccdc0794bd/Formula/boost.rb
+  install:
+- brew update
+- brew install cmake git autoconf automake libtool openssl
+- brew install python3 google-perftools berkeley-db readline
+  # Install boost 1.60.0
+- brew unlink boost
+- brew install homebrew/versions/boost160
 
-before_script:
-  - git clone https://github.com/GolosChain/golos
-  - cd ${TRAVIS_BUILD_DIR}/golos
-  - git checkout ${GOLOS_VERSION}
-  - git submodule update --init --recursive
+  before_script:
+- git clone https://github.com/GolosChain/golos
+- cd ${TRAVIS_BUILD_DIR}/golos
+- git checkout ${GOLOS_VERSION}
+- git submodule update --init --recursive
 
 script:
-  - cd ${TRAVIS_BUILD_DIR}/golos
-  - cmake -DBOOST_ROOT='/usr/local/Cellar/boost160/1.60.0' -DCMAKE_BUILD_TYPE=Release .
-  - make
-  - mv programs golosnode
-  - tar -cvzf golosnode-${GOLOS_VERSION}-Darwin.tgz golosnode
+- cd ${TRAVIS_BUILD_DIR}/golos
+- cmake -DCMAKE_BUILD_TYPE=Release .
+- make
+- mkdir golosnode
+- cp programs/golosd/golosd golosnode
+- cp programs/cli_wallet/cli_wallet golosnode
+- cp programs/golosd/snapshot5392323.json golosnode
+- mv golosnode golosnode-${GOLOS_VERSION}
+- tar -cvzf golosnode-${GOLOS_VERSION}-Darwin.tgz golosnode-${GOLOS_VERSION}
 
 deploy:
   provider: releases
-  #api_key:
-  #  secure: "eS1BHRsHutZ9q+grBLVIH/nWKwzGlqGhpoACgByrGDjfz7pXmuoZekk7//26V/s4ZncF7w9Tj9KiB1vGONw/MUwK1PCWWBCz3H3DlJpLa5B5TyUCf2KOUMSUn8oAcpq5Jvnqeh0yW2C3u5Avxv0/u+C5Z0z9Q+ROhr0LTVkL6WcVxiWCqkH+hLhr85b+Q1oBgWnk94ArBOWxBA6pEstnt4ESGtcABjJUWkh9EvheqGBm0DzXaZVa7356ut83dwiIPpUMUxb7y56KWj4HjI6FXPXjO6awgGg+onfwaddY9Oe00GXZmzp1wIrxLWcUyJyTW4l6kz28/YgQhVBEcebyGH9kSdiaFPfuNFmmMjh5JjZsf4Ul3z2+I48Lwv36ZcvJoxfCBGhdMq/1nuaBxdbjo5yT2ULeobxpAMIhBaGfSS5+DrSJoS6lBcMr2G5wuHFCZMeyW6iGf7UgkT9phL0SwtMiO7OnGouBPKn9YI5g17oSFgzjYLEXry6tZP+K1Lo7NkMrmpd93slcApGEzhef9vpAUpOA9AaaZqkMprN3lm6yIa4ZHRlCsCl0JELup1pQOZ27kFcYXnptE82BfppVLJ+VUz/rIPtKU/0vMhCNjXJP6Vb8qlrxLSUtT0YFT4bCcGRRJAWdimJ6rq8R+hGM58r1hDNwJjc1FCwZZe0N5ps="
-  #file: steem-${STEEM_VERSION}-Darwin.tgz
-  #skip_cleanup: true
-  #overwrite: true
+  api_key:
+    secure: hcajRd2xoj73oNFkZIi1XtBv4xM2NVnmwwDZGXyqn1DZ53OEC8+f2+i26qrnsqp5qPGtztxRLVWKkrHu3FPgtHGSKy6jquHRDtOdVxM4igdaL6DMoKnM/FY78bIVuVcQUpr0x2xdE0avghcFq0agUxruAWBYuS2Y1S4IboXUjku/wp+0M3bQTQ9ZhZ6ru8u6YdwXCfMZkvWeIliteccKOva51RrxkDv+STe8FcXVuwYt8Xqs065XUKjI9H1/WeTt+1cNMOrPVADCssZ8blVx/IPv7M1NsLoY7bgu8d5EA1Wd5Hd1B4hEoS8b+xDtVVRH49tlOTc+7I3VZnrDdq0kTzRxCz1mKcmaJSS8ikCpWEXLD0meWkyZapyIy2cHobIm4WZM4DzCTO5L8rO55gGzq+CgG3QA8VxSRI8C1/gfKcHga/gjrpUXjlbVG5bwCjdKS+625rDJ8Pw+i+U5+Jzi8knU5Y1b3HOg+1FA0p3GM4Hy8mxGp3zzIMkYvlN9ONTe33xMQl4EWawXM2e4yCCw+klnJs7/m5pcVNLYIMMYr//JuxOpUfHotR88BWhzj5sBpBWl17YDPdsFhesQjEFxHaSVlizvQWMtZoPSFLJnPGlE4k+AQC2C2UJ7ZAkMmNdBQKD6JkmLmhNLi+ibL3MbUnKST3UmvrU3k/i8uEvo6Fg=
+  file: golosnode-${GOLOS_VERSION}-Darwin.tgz 
+  skip_cleanup: true
+  overwrite: true
