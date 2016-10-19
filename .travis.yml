@@ -10,7 +10,7 @@ env:
 
 install:
  - brew update
- - brew install cmake git autoconf automake libtool openssl
+   #- brew install cmake git autoconf automake libtool openssl
  - brew install python3 google-perftools berkeley-db readline
    # Install boost 1.60.0
  - brew unlink boost
