@@ -2,7 +2,7 @@ language: none
 env:
   global:
     - GOLOS_VERSION=v0.14.2
-    - secure: aoy5FuqEVT4v6YkCfxlGnYafGG2wV1sUFjIG9WEvD/Uzgljz0cEYgtf8kJsS1N+U2cg8IYSzxfgQjAZJtgViAOdwXPJLhOQs/NVWN1dXJQNbsSfPkF0gEbnTjRaIWOqICWo4obkmnhMa+w7Ypf/UVa83Pp6s6hzz+D5zLudtTePHAA+CkiXgCh8WCnPLmRQqGpj9saup4zBR8990N+E/trJX7/A602ook0jo5HDZu+NXiOD94F88ZO9cvrLUdWAW7hdJXgTRr5r+3cE+amhqP98P6A3Ar/lzVJDBL9z3rUO4gSBRNs9C1wZYT+eiGNve6IKIE2x4IesCPmMKkE2cEQ==
+    - secure: PxNOP3khargvtlq6T6I2RllnqPwP1FEoHYyMhgUSmpeklaZ1D5opCOC/Ts3baMKJloSTquSMjlXGy7EJ9sSq0fMCJerQcgEml2wZ2m97KA2jGrvdDg29jGpKmFzgVdBb9G2ccqSOe1fztEO8D48k6ozNqzaDJe3c7/EYK2QisFZ0W0ke5q25ccf7Txs9YF6fGdLi2SSNqjuhKQZdlanM1sF/O0xQb7zm/9abirwiCwG8LAwBbJDml+JTfwOVo9uARDBiT5oIVKaFiTynJ4ilmFsyBzLt3q8e/n2hFGTou1HOI1pwV9XLa5uxjpBMQqrIMt/6B0Vpoea2b/COenWfaQ==
 
 build:
   pre_ci_boot:
