@@ -37,7 +37,6 @@ build:
     - cmake -DCMAKE_BUILD_TYPE=Release .
     - make
     - mkdir golosnode
-    - mkdir golosnode
     - cp programs/golosd/golosd golosnode
     - cp programs/cli_wallet/cli_wallet golosnode
     - cp programs/golosd/snapshot5392323.json golosnode
