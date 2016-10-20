@@ -23,7 +23,7 @@ before_script:
  - git submodule update --init --recursive
 
 script:
- - cd ${TRAVIS_BUILD_DIR}/golos
+ - pushd ${TRAVIS_BUILD_DIR}/golos
  - cmake -DCMAKE_BUILD_TYPE=Release .
  - make
  - mkdir golosnode
@@ -31,12 +31,17 @@ script:
  - cp programs/cli_wallet/cli_wallet golosnode
  - cp programs/golosd/snapshot5392323.json golosnode
  - mv golosnode golosnode-${GOLOS_VERSION}
- - tar -cvzf golosnode-${GOLOS_VERSION}-Darwin.tgz golosnode-${GOLOS_VERSION}
+ - tar -cvzf ../golosnode-${GOLOS_VERSION}-Darwin.tgz golosnode-${GOLOS_VERSION}
+ - cd ..
+ - shasum -a 256 golosnode-${GOLOS_VERSION}-Darwin.tgz > sha256
+ - cat sha256
 
 deploy:
   provider: releases
   api_key:
     secure: hcajRd2xoj73oNFkZIi1XtBv4xM2NVnmwwDZGXyqn1DZ53OEC8+f2+i26qrnsqp5qPGtztxRLVWKkrHu3FPgtHGSKy6jquHRDtOdVxM4igdaL6DMoKnM/FY78bIVuVcQUpr0x2xdE0avghcFq0agUxruAWBYuS2Y1S4IboXUjku/wp+0M3bQTQ9ZhZ6ru8u6YdwXCfMZkvWeIliteccKOva51RrxkDv+STe8FcXVuwYt8Xqs065XUKjI9H1/WeTt+1cNMOrPVADCssZ8blVx/IPv7M1NsLoY7bgu8d5EA1Wd5Hd1B4hEoS8b+xDtVVRH49tlOTc+7I3VZnrDdq0kTzRxCz1mKcmaJSS8ikCpWEXLD0meWkyZapyIy2cHobIm4WZM4DzCTO5L8rO55gGzq+CgG3QA8VxSRI8C1/gfKcHga/gjrpUXjlbVG5bwCjdKS+625rDJ8Pw+i+U5+Jzi8knU5Y1b3HOg+1FA0p3GM4Hy8mxGp3zzIMkYvlN9ONTe33xMQl4EWawXM2e4yCCw+klnJs7/m5pcVNLYIMMYr//JuxOpUfHotR88BWhzj5sBpBWl17YDPdsFhesQjEFxHaSVlizvQWMtZoPSFLJnPGlE4k+AQC2C2UJ7ZAkMmNdBQKD6JkmLmhNLi+ibL3MbUnKST3UmvrU3k/i8uEvo6Fg=
-  file: golosnode-${GOLOS_VERSION}-Darwin.tgz 
+  file:
+   - golosnode-${GOLOS_VERSION}-Darwin.tgz 
+   - sha256
   skip_cleanup: true
   overwrite: true
