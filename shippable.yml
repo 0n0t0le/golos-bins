@@ -45,7 +45,7 @@ build:
     - tar -cvzf ../golosnode-${GOLOS_VERSION}-Linux.tgz golosnode-${GOLOS_VERSION}
     - cd ..
     - sha256sum golosnode-${GOLOS_VERSION}-Linux.tgz > golosnode-${GOLOS_VERSION}-Linux.sha256
-    - cat sha256
+    - cat golosnode-${GOLOS_VERSION}-Linux.sha256
   on_success:
     - gem install dpl
     - dpl

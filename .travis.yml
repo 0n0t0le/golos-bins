@@ -34,7 +34,7 @@ script:
  - tar -cvzf ../golosnode-${GOLOS_VERSION}-Darwin.tgz golosnode-${GOLOS_VERSION}
  - cd ..
  - shasum -a 256 golosnode-${GOLOS_VERSION}-Darwin.tgz > golosnode-${GOLOS_VERSION}-Darwin.sha256
- - cat sha256
+ - cat golosnode-${GOLOS_VERSION}-Darwin.sha256
 
 deploy:
   provider: releases
