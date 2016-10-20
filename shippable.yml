@@ -1,7 +1,7 @@
 language: none
 env:
   global:
-    - STEEM_VERSION=v0.14.2
+    - GOLOS_VERSION=v0.14.2
     - secure: aoy5FuqEVT4v6YkCfxlGnYafGG2wV1sUFjIG9WEvD/Uzgljz0cEYgtf8kJsS1N+U2cg8IYSzxfgQjAZJtgViAOdwXPJLhOQs/NVWN1dXJQNbsSfPkF0gEbnTjRaIWOqICWo4obkmnhMa+w7Ypf/UVa83Pp6s6hzz+D5zLudtTePHAA+CkiXgCh8WCnPLmRQqGpj9saup4zBR8990N+E/trJX7/A602ook0jo5HDZu+NXiOD94F88ZO9cvrLUdWAW7hdJXgTRr5r+3cE+amhqP98P6A3Ar/lzVJDBL9z3rUO4gSBRNs9C1wZYT+eiGNve6IKIE2x4IesCPmMKkE2cEQ==
 
 build:
@@ -23,21 +23,36 @@ build:
       libtool
       python3
       ruby
-    - git clone https://github.com/steemit/steem.git
-    - cd steem
-    - git checkout ${STEEM_VERSION}
+      python-dev
+      libicu-dev
+      libbz2-dev
+      libncurses5-dev
+      doxygen
+      libreadline-dev
+      dh-autoreconf
+    - git clone https://github.com/GolosChain/golos.git
+    - cd golos
+    - git checkout ${GOLOS_VERSION}
     - git submodule update --init --recursive
-    - cmake -DENABLE_INSTALLER=ON .
+    - cmake -DCMAKE_BUILD_TYPE=Release .
     - make
-    - make install
-    - mv install steem
-    - tar -cvzf steem-${STEEM_VERSION}-Linux.tgz steem
+    - mkdir golosnode
+    - mkdir golosnode
+    - cp programs/golosd/golosd golosnode
+    - cp programs/cli_wallet/cli_wallet golosnode
+    - cp programs/golosd/snapshot5392323.json golosnode
+    - mv golosnode golosnode-${GOLOS_VERSION}
+    - tar -cvzf ../golosnode-${GOLOS_VERSION}-Linux.tgz golosnode-${GOLOS_VERSION}
+    - cd ..
+    - sha256sum golosnode-${GOLOS_VERSION}-Linux.tgz > golosnode-${GOLOS_VERSION}-Linux.sha256
+    - cat sha256
   on_success:
     - gem install dpl
     - dpl
-      --provider=releпases
+      --provider=releases
       --skip_cleanup=true
       --api-key=$GITHUB_API_KEY
       --overwrite=true
-      --file=steem-${STEEM_VERSION}-Linux.tgz
+      --file=golosnode-${GOLOS_VERSION}-Linux.tgz
+      --file=golosnode-${GOLOS_VERSION}-Linux.sha256
       || echo "Done!"
