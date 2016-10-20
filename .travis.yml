@@ -45,3 +45,5 @@ deploy:
    - golosnode-${GOLOS_VERSION}-Darwin.sha256
   skip_cleanup: true
   overwrite: true
+  on:
+    tags: true
